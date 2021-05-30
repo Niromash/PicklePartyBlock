@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+group 'net.picklemc'
+version '1.0'
+
+repositories {
+    mavenCentral()
+
+    maven { url 'https://papermc.io/repo/repository/maven-public/' }
+    maven { url 'https://mvnrepository.com/artifact/com.github.azbh111/craftbukkit-1.13.2' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://maven.enginehub.org/repo/' }
+    maven {
+        name = "PickleAPI"
+        url = uri("https://maven.pkg.github.com/PickleMC/PickleCore")
+        credentials {
+            username = "PickleMC"
+            password = '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'
+        }
+    }
+}
+
+dependencies {
+    compileOnly 'com.destroystokyo.paper:paper-api:1.13.2-R0.1-SNAPSHOT'
+    compileOnly group: 'com.github.azbh111', name: 'craftbukkit-1.13.2', version: 'R'
+    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT'
+    compileOnly 'com.sk89q.worldedit:worldedit-core:7.2.0-SNAPSHOT'
+    compileOnly 'net.picklemc:pickle-api:1.2'
+
+    implementation 'org.mongodb:mongo-java-driver:3.12.7'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.rabbitmq:amqp-client:5.12.0'
+    implementation 'fr.mrmicky:FastBoard:1.1.0'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+shadowJar {
+    archiveFileName = "${baseName}-${classifier}.${extension}"
+}
