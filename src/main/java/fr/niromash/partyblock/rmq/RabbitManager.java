@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import net.picklemc.api.PickleAPI;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -22,6 +24,7 @@ public class RabbitManager {
     private Connection connection;
     private Channel channel;
     private final String QUEUE_NAME = "PartyBlock";
+    private final AMQP.BasicProperties.Builder PROPERTIES = new AMQP.BasicProperties().builder().appId(PickleAPI.get().getPickleServer().getServerName());
 
     public RabbitManager(RabbitURI rabbitUri) {
         this.rabbitUri = rabbitUri;
@@ -39,14 +42,14 @@ public class RabbitManager {
     public void sendMessage(String routeName) throws IOException {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("routeName", routeName);
-        channel.basicPublish("", QUEUE_NAME, null, new Gson().toJson(jsonObject).getBytes());
+        channel.basicPublish("", QUEUE_NAME, PROPERTIES.build(), new Gson().toJson(jsonObject).getBytes());
     }
 
     public void sendMessage(String routeName, List<HashMap<String, String>> object) throws IOException {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("routeName", routeName);
         for (HashMap<String, String> hashMap : object) hashMap.forEach(jsonObject::addProperty);
-        channel.basicPublish("", QUEUE_NAME, null, new Gson().toJson(jsonObject).getBytes());
+        channel.basicPublish("", QUEUE_NAME, PROPERTIES.build(), new Gson().toJson(jsonObject).getBytes());
     }
 
     public void disconnect() throws IOException, TimeoutException {

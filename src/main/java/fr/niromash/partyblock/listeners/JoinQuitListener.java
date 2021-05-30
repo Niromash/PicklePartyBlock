@@ -55,7 +55,7 @@ public class JoinQuitListener implements Listener {
         PartyBlock instance = PartyBlock.get();
         GameManager gameManager = instance.getGameManager();
 
-        player.setWalkSpeed(.1F);
+        player.setWalkSpeed(.2F);
 
         if (gameManager.getState().equals(GameState.IN_GAME)) {
             instance.getPlayerManager().getPlayer(player).setState(PlayerState.DEAD);

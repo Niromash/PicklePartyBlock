@@ -46,8 +46,8 @@ import static fr.niromash.partyblock.utils.ListUtils.distinctBy;
 public class GameManager {
 
     private GameState state = GameState.WAITING;
-    public final int requiredPlayersToStart = 2;
-    public final int maxPlayers = 6;
+    public final int requiredPlayersToStart = PickleAPI.get().getPickleServer().getMinPlayers();
+    public final int maxPlayers = PickleAPI.get().getPickleServer().getMaxPlayers();
     private final Location hubLocation = new Location(Bukkit.getWorld(PartyBlock.WORLDNAME), -53.5, 21, 103.5, 180, 0);
     private final Location spawnLocation = new Location(Bukkit.getWorld(PartyBlock.WORLDNAME), -53.5, 18, 54.5, 180, 0);
     private long gameStartDate;
