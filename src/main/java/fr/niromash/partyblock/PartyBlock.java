@@ -32,6 +32,7 @@ public class PartyBlock extends JavaPlugin {
         getLogger().info("Plugin PartyBlock enabled.");
         playerManager = new PlayerManager();
         gameManager = new GameManager();
+        System.out.println(System.getenv("RABBIT_URI"));
         rabbitManager = new RabbitManager(System.getenv("RABBIT_URI"));
         try {
             rabbitManager.connect();
