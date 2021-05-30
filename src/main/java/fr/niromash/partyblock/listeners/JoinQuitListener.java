@@ -6,6 +6,8 @@ import fr.niromash.partyblock.game.GameState;
 import fr.niromash.partyblock.player.PlayerState;
 import fr.niromash.partyblock.sounds.Sounds;
 import fr.niromash.partyblock.task.LobbyTask;
+import net.picklemc.api.PickleAPI;
+import net.picklemc.api.server.ServerState;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -41,6 +43,7 @@ public class JoinQuitListener implements Listener {
 
         if (!gameManager.getState().equals(GameState.STARTING) && onlinePlayersCount >= gameManager.requiredPlayersToStart) {
             gameManager.setState(GameState.STARTING);
+            PickleAPI.get().getPickleServer().updateState(ServerState.STARTING);
             new LobbyTask().runTaskTimer(PartyBlock.get(), 20, 20);
         }
     }

@@ -3,6 +3,8 @@ package fr.niromash.partyblock.task;
 import fr.niromash.partyblock.PartyBlock;
 import fr.niromash.partyblock.game.GameManager;
 import fr.niromash.partyblock.game.GameState;
+import net.picklemc.api.PickleAPI;
+import net.picklemc.api.server.ServerState;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -28,6 +30,7 @@ public class LobbyTask extends BukkitRunnable {
         if(players.size() < gameManager.requiredPlayersToStart) {
             Bukkit.broadcastMessage(ChatColor.RED + "Un joueur a quitté, la partie a été annulé !");
             gameManager.setState(GameState.WAITING);
+            PickleAPI.get().getPickleServer().updateState(ServerState.WAITING);
             cancel();
             return;
         }

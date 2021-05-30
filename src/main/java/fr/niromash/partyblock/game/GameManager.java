@@ -25,6 +25,8 @@ import fr.niromash.partyblock.sounds.Sounds;
 import fr.niromash.partyblock.utils.ItemBuilder;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.picklemc.api.PickleAPI;
+import net.picklemc.api.server.ServerState;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -65,6 +67,7 @@ public class GameManager {
     public void start() {
         gameStartDate = System.currentTimeMillis();
         setState(GameState.IN_GAME);
+        PickleAPI.get().getPickleServer().updateState(ServerState.INGAME);
         PlayerManager playerManager = PartyBlock.get().getPlayerManager();
         for (PBPlayer pbPlayer : playerManager.getPlayers().values()) {
             Player player = pbPlayer.getPlayer();
@@ -94,6 +97,7 @@ public class GameManager {
         }
         Bukkit.broadcastMessage(ChatColor.GREEN + "La partie est finie !");
         setState(GameState.FINISHED);
+        PickleAPI.get().getPickleServer().updateState(ServerState.FINISHED);
         loadModule("lobbyModule");
         try {
             PartyBlock.get().getSoundManager().stop();
@@ -101,6 +105,13 @@ public class GameManager {
             e.printStackTrace();
             Bukkit.broadcastMessage(ChatColor.RED + "Une erreur s'est produite durant l'arrêt de la musique !");
         }
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                PickleAPI.get().getPickleServer().stop();
+            }
+        }.runTaskLater(PartyBlock.get(), 20 * 20);
     }
 
     private void initGame(double timeBeforeChange, Modules module) {
