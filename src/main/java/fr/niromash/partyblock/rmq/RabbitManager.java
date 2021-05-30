@@ -18,18 +18,20 @@ import java.util.concurrent.TimeoutException;
 
 public class RabbitManager {
 
-    private final String rabbitUri;
+    private final RabbitURI rabbitUri;
     private Connection connection;
     private Channel channel;
     private final String QUEUE_NAME = "PartyBlock";
 
-    public RabbitManager(String rabbitUri) {
+    public RabbitManager(RabbitURI rabbitUri) {
         this.rabbitUri = rabbitUri;
     }
 
     public void connect() throws URISyntaxException, NoSuchAlgorithmException, KeyManagementException, IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setUri(rabbitUri);
+        factory.setHost(rabbitUri.getHost());
+        factory.setUsername(rabbitUri.getUsername());
+        factory.setPassword(rabbitUri.getPassword());
         connection = factory.newConnection();
         channel = connection.createChannel();
     }

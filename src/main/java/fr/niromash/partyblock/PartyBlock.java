@@ -5,6 +5,7 @@ import fr.niromash.partyblock.game.GameManager;
 import fr.niromash.partyblock.listeners.*;
 import fr.niromash.partyblock.player.PlayerManager;
 import fr.niromash.partyblock.rmq.RabbitManager;
+import fr.niromash.partyblock.rmq.RabbitURI;
 import fr.niromash.partyblock.sounds.SoundManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -13,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
@@ -32,8 +34,11 @@ public class PartyBlock extends JavaPlugin {
         getLogger().info("Plugin PartyBlock enabled.");
         playerManager = new PlayerManager();
         gameManager = new GameManager();
-        System.out.println(System.getenv("RABBIT_URI"));
-        rabbitManager = new RabbitManager(System.getenv("RABBIT_URI"));
+        try {
+            rabbitManager = new RabbitManager(new RabbitURI(System.getenv("RABBIT_URI")));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         try {
             rabbitManager.connect();
         } catch (URISyntaxException | IOException | NoSuchAlgorithmException | KeyManagementException | TimeoutException e) {
