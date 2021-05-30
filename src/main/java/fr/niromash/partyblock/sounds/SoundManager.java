@@ -46,4 +46,8 @@ public class SoundManager {
     public void stop() throws IOException {
         manager.sendMessage("stop");
     }
+
+    public void end() throws IOException {
+        manager.sendMessage("end");
+    }
 }

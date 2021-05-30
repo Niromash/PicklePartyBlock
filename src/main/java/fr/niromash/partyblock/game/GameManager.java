@@ -100,6 +100,7 @@ public class GameManager {
         PickleAPI.get().getPickleServer().updateState(ServerState.FINISHED);
         loadModule("lobbyModule");
         try {
+            PartyBlock.get().getSoundManager().end();
             PartyBlock.get().getSoundManager().stop();
         } catch (IOException e) {
             e.printStackTrace();
