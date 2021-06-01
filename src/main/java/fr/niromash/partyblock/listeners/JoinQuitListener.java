@@ -30,12 +30,15 @@ public class JoinQuitListener implements Listener {
         Player player = e.getPlayer();
         GameManager gameManager = PartyBlock.get().getGameManager();
 
-        player.setGameMode(GameMode.ADVENTURE);
+        player.setGameMode(GameMode.SURVIVAL);
         player.setHealth(20);
         player.setFoodLevel(20);
         player.setLevel(0);
         player.getInventory().clear();
         player.teleport(gameManager.getHubLocation());
+        player.setWalkSpeed(.2F);
+
+        if(PartyBlock.get().getGameManager().getState() != GameState.WAITING) return;
 
         int onlinePlayersCount = Bukkit.getOnlinePlayers().size();
         Bukkit.broadcastMessage(ChatColor.GRAY + "(" + ChatColor.GOLD + onlinePlayersCount + "/" + gameManager.maxPlayers + ChatColor.GRAY + ") " + player.getDisplayName() + " a rejoint la partie !");
@@ -54,8 +57,6 @@ public class JoinQuitListener implements Listener {
         Player player = e.getPlayer();
         PartyBlock instance = PartyBlock.get();
         GameManager gameManager = instance.getGameManager();
-
-        player.setWalkSpeed(.2F);
 
         if (gameManager.getState().equals(GameState.IN_GAME)) {
             instance.getPlayerManager().getPlayer(player).setState(PlayerState.DEAD);
