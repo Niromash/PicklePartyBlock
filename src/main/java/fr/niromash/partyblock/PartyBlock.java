@@ -67,6 +67,7 @@ public class PartyBlock extends JavaPlugin {
         pm.registerEvents(new PlayerDeathListener(), this);
         pm.registerEvents(new EntityDamageListener(), this);
         pm.registerEvents(new PlayerInteractListener(), this);
+        pm.registerEvents(new DropItemListener(), this);
     }
 
     public RabbitManager getRabbitManager() {
